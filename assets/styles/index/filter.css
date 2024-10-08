@@ -4,12 +4,15 @@
     border-right: 0.0625rem solid #e0e0e0;
     box-sizing: border-box;
     flex-basis: 17.55rem;
-    padding: 1rem;
+    overflow: hidden auto;
 }
 
 #filter > .form {
+    top: 0;
+    background-color: #ffffff;
     border-bottom: 0.0625rem solid #e0e0e0;
     padding: 1rem;
+    position: sticky;
 
     align-items: stretch;
     display: flex;
@@ -108,3 +111,40 @@
     font-size: 1.125rem;
     font-weight: 400;
 }
+
+#filter > .list > .item > .name-wrapper > .category {
+    color: #a0a0a0;
+    font-size: 0.8rem;
+}
+
+#filter > .list > .item > .address {
+    font-size: 0.8rem;
+}
+
+#filter > .list > .item > .contact,
+#filter > .list > .item > .homepage {
+    color: #757575;
+    font-size: 0.8rem;
+    text-decoration: none;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    justify-content: flex-start;
+}
+
+#filter > .list > .item > .homepage {
+    max-width: 14.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+#filter > .list > .item > .contact:hover,
+#filter > .list > .item > .homepage:hover {
+    color: #424242;
+}
+
+
+

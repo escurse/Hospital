@@ -55,6 +55,9 @@ const map = new kakao.maps.Map($map, {
     level: 3
 });
 
+const $filter = document.getElementById('filter');
+const $filterList = $filter.querySelector(':scope > .list');
+
 const hospitalCategoryMap = {
     '01': '상급종합병원',
     '11': '종합병원',
@@ -102,6 +105,38 @@ const loadData = () => {
                 homepage: hospitalObject['hospUrl'],            // 홈페이지 주소
                 totalDoctorsCount: hospitalObject['drTotCnt'],  // 전체 의사 수
             })
+        }
+        $filterList.innerHTML = '';
+        for (const hospital of hospitals) {
+            const $name = document.createElement('span');
+            $name.classList.add('name');
+            $name.innerText = hospital['name'];
+            const $category = document.createElement('span');
+            $category.classList.add('category');
+            $category.innerText = hospitalCategoryMap[hospital['categoryCode']];
+            const $nameWrapper = document.createElement('span');
+            $nameWrapper.classList.add('name-wrapper');
+            $nameWrapper.append($name, $category);
+
+            const $address = document.createElement('span');
+            $address.classList.add('address');
+            $address.innerText = hospital['address'];
+
+            const $contact = document.createElement('a');
+            $contact.classList.add('contact');
+            $contact.href = hospital['contact'];
+            $contact.innerHTML = `<i class="fa-solid fa-phone"></i>${hospital['contact']}`;
+
+            const $homepage = document.createElement('a');
+            $homepage.classList.add('homepage');
+            $homepage.href = `tel:${hospital['contact']}`;
+            $homepage.target = '_blank';
+            $homepage.innerHTML = `<i class="fa-solid fa-globe"></i>${hospital['homepage']}`;
+
+            const $item = document.createElement('li');
+            $item.classList.add('item');
+            $item.append($nameWrapper, $address, $contact, $homepage);
+            $filterList.append($item);
         }
     };
     xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
