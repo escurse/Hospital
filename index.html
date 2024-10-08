@@ -12,7 +12,19 @@
 </head>
 <body>
 <section id="filter">
-
+    <form class="form">
+        <label class="label">
+            <span class="text">이름</span>
+            <input autocomplete="on" type="text" class="field" maxlength="50" name="name" placeholder="이름">
+        </label>
+        <label class="label">
+            <span class="text">구분</span>
+            <select name="category" class="field">
+                <option selected value="00">전체</option>
+            </select>
+        </label>
+        <button class="button" type="submit">검색</button>
+    </form>
 </section>
 <section id="map">
 
