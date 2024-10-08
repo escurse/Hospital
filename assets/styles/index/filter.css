@@ -1,9 +1,8 @@
 @charset "UTF-8";
 
 #filter {
-    flex-basis: 20rem;
-
-    background-color: red;
+    border-right: 0.0625rem solid #e0e0e0;
+    flex-basis: 15rem;
 }
 
 
