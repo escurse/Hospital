@@ -78,4 +78,33 @@
     justify-content: flex-start;
 }
 
+#filter > .list > .item{
+    border-bottom: 0.0625rem solid #eeeeee;
+    padding: 1rem;
 
+    align-items: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    justify-content: flex-start;
+}
+
+#filter > .list > .item:hover {
+    background-color: #f5f5f5;
+}
+
+#filter > .list > .item > .name-wrapper {
+    cursor: pointer;
+
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    gap: 0.375rem;
+    justify-content: flex-start;
+}
+
+#filter > .list > .item > .name-wrapper > .name {
+    color: #42a5f5;
+    font-size: 1.125rem;
+    font-weight: 400;
+}
