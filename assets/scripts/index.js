@@ -22,11 +22,11 @@ function xmlToJson(xml) {
 
     // do children
     // If all text nodes inside, get concatenated text from them.
-    var textNodes = [].slice.call(xml.childNodes).filter(function(node) {
+    var textNodes = [].slice.call(xml.childNodes).filter(function (node) {
         return node.nodeType === 3;
     });
     if (xml.hasChildNodes() && xml.childNodes.length === textNodes.length) {
-        obj = [].slice.call(xml.childNodes).reduce(function(text, node) {
+        obj = [].slice.call(xml.childNodes).reduce(function (text, node) {
             return text + node.nodeValue;
         }, "");
     } else if (xml.hasChildNodes()) {
@@ -55,6 +55,28 @@ const map = new kakao.maps.Map($map, {
     level: 3
 });
 
+const hospitalCategoryMap = {
+    '01': '상급종합병원',
+    '11': '종합병원',
+    '21': '병원',
+    '28': '요양병원',
+    '29': '정신병원',
+    '31': '의원',
+    '41': '치과병원',
+    '51': '치과의원',
+    '61': '조산원',
+    '71': '보건소',
+    '72': '보건지소',
+    '73': '보건진료소',
+    '74': '모자보건센터',
+    '75': '보건의료원',
+    '81': '약국',
+    '91': '한방종합병원',
+    '92': '한방병원',
+    '93': '한의원',
+    '94': '한약방',
+    'AA': '병의원'
+};
 const hospitals = [];
 
 const loadData = () => {
@@ -67,8 +89,22 @@ const loadData = () => {
         if (xhr.status < 200 || xhr.status >= 300) {
             return;
         }
+        const response = xmlToJson(xhr.responseText);
+        for (const hospitalObject of response['response']['body']['items']['item']) {
+            hospitals.push({
+                name: hospitalObject['yadmNm'],                 // 병원 이름
+                categoryCode: hospitalObject['clCd'],           // 병원 구분 코드
+                latitude: hospitalObject['XPos'],               // 위도
+                longitude: hospitalObject['YPos'],              // 경도
+                address: hospitalObject['addr'],                // 주소
+                addressPostal: hospitalObject['postNo'],        // 우편번호
+                contact: hospitalObject['telno'],               // 전화번호
+                homepage: hospitalObject['hospUrl'],            // 홈페이지 주소
+                totalDoctorsCount: hospitalObject['drTotCnt'],  // 전체 의사 수
+            })
+        }
     };
-    xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
+    xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
     xhr.send();
 };
 
