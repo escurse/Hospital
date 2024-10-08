@@ -135,10 +135,7 @@
 }
 
 #filter > .list > .item > .homepage {
-    max-width: 14.25rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    word-break: break-all;
 }
 
 #filter > .list > .item > .contact:hover,

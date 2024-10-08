@@ -1,3 +1,8 @@
+const $loading = document.body.querySelector(':scope > .loading');
+
+const showLoading = () => $loading.classList.add('--visible');
+const hideLoading = () => $loading.classList.remove('--visible');
+
 function xmlToJson(xml) {
     if (typeof xml === 'string') {
         xml = (new DOMParser()).parseFromString(xml, 'text/xml');
@@ -89,6 +94,7 @@ const loadData = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        hideLoading();
         if (xhr.status < 200 || xhr.status >= 300) {
             return;
         }
@@ -137,12 +143,18 @@ const loadData = () => {
             $item.classList.add('item');
             $item.append($nameWrapper, $address, $contact, $homepage);
             $filterList.append($item);
+
+            if (hospital['homepage'] === undefined) {
+                $homepage.innerHTML = '';
+            }
         }
     };
     xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
     xhr.send();
+    showLoading();
 };
 
+loadData();
 
 
 
