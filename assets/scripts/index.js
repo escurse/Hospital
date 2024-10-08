@@ -58,7 +58,15 @@ const map = new kakao.maps.Map($map, {
 const hospitals = [];
 
 const loadData = () => {
-
+    hospitals.splice(0, hospitals.length);
+    const xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = () => {
+        if (xhr.status !== XMLHttpRequest.DONE) {
+            return;
+        }
+    };
+    xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
+    xhr.send();
 };
 
 
