@@ -61,7 +61,10 @@ const loadData = () => {
     hospitals.splice(0, hospitals.length);
     const xhr = new XMLHttpRequest();
     xhr.onreadystatechange = () => {
-        if (xhr.status !== XMLHttpRequest.DONE) {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
             return;
         }
     };
