@@ -1,3 +1,12 @@
+// 마커가 표시될 위치입니다
+
+// // 마커를 생성합니다
+//
+// // 마커가 지도 위에 표시되도록 설정합니다
+//
+// // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+// // marker.setMap(null);
+
 const $loading = document.body.querySelector(':scope > .loading');
 
 const showLoading = () => $loading.classList.add('--visible');
@@ -147,14 +156,45 @@ const loadData = () => {
             if (hospital['homepage'] === undefined) {
                 $homepage.innerHTML = '';
             }
+
+            const markerPosition = new kakao.maps.LatLng(hospital['longitude'], hospital['latitude']);
+
+            const marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+
+            marker.setMap(map);
         }
     };
-    xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
+    // xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
 
-    // 가정용 xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000&numOfRows=1000');
-
+    // 가정용
+    xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000&numOfRows=1000');
     xhr.send();
     showLoading();
 };
 
 loadData();
+
+
+// var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+//     mapOption = {
+//         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+//         level: 3 // 지도의 확대 레벨
+//     };
+//
+// var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+//
+// // 마커가 표시될 위치입니다
+// var markerPosition  = new kakao.maps.LatLng(33.450701, 126.570667);
+//
+// // 마커를 생성합니다
+// var marker = new kakao.maps.Marker({
+//     position: markerPosition
+// });
+//
+// // 마커가 지도 위에 표시되도록 설정합니다
+// marker.setMap(map);
+//
+// // 아래 코드는 지도 위의 마커를 제거하는 코드입니다
+// // marker.setMap(null);
