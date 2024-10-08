@@ -155,12 +155,3 @@ const loadData = () => {
 };
 
 loadData();
-
-
-
-
-
-
-
-
-
