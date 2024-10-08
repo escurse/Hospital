@@ -48,6 +48,19 @@ function xmlToJson(xml) {
     return obj;
 }
 
+const $map = document.getElementById('map');
+
+const map = new kakao.maps.Map($map, {
+    center: new kakao.maps.LatLng(35.8715411, 128.601505),
+    level: 3
+});
+
+const hospitals = [];
+
+const loadData = () => {
+
+};
+
 
 
 
