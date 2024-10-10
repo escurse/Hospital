@@ -70,6 +70,22 @@ const $filterList = $filter.querySelector(':scope > .list');
 $filterForm.onsubmit = (e) => {
     // 새로고침 막기
     e.preventDefault();
+    // from태그['name값']
+    const nameValue = $filterForm['name'].value;
+    const categoryValue = $filterForm['category'].value;
+    const filteredHospitals = [];
+    for (const hospital of hospitals) {
+        // 병원의 이름(hospital.name)이 nameValue를 포함
+        // &&
+        // categoryValue가 00 || 병원의 구분(hospital.category)이 categoryValue와 동일
+        if (hospital.name.includes(nameValue) && categoryValue === '00' ||
+            hospital.name.includes(nameValue) && hospital.categoryCode === categoryValue) {
+            filteredHospitals.push(hospital);
+        }
+    }
+    $filterList.innerHTML = '';
+    markers.forEach((marker) => marker.setMap(null));
+    filteredHospitals.forEach((hospital) => addItem(hospital));
 };
 
 const addItem = (hospital) => {
@@ -137,7 +153,16 @@ const hospitalCategoryMap = {
     '94': '한약방',
     'AA': '병의원'
 };
+
 const hospitals = [];
+
+Object.keys(hospitalCategoryMap).forEach((key) => {
+    const text = hospitalCategoryMap[key];
+    const $option = document.createElement('option');
+    $option.innerText = text;
+    $option.value = key;
+    $filterForm['category'].append($option);
+});
 
 const loadData = () => {
     hospitals.splice(0, hospitals.length);
