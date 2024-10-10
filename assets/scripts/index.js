@@ -148,10 +148,8 @@ const loadData = () => {
                 $homepage.innerHTML = '';
             }
 
-            const markerPosition = new kakao.maps.LatLng(hospital['longitude'], hospital['latitude']);
-
             const marker = new kakao.maps.Marker({
-                position: markerPosition
+                position: new kakao.maps.LatLng(hospital['longitude'], hospital['latitude'])
             });
 
             marker.setMap(map);
