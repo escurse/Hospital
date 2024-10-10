@@ -78,8 +78,11 @@ $filterForm.onsubmit = (e) => {
         // 병원의 이름(hospital.name)이 nameValue를 포함
         // &&
         // categoryValue가 00 || 병원의 구분(hospital.category)이 categoryValue와 동일
-        if (hospital.name.includes(nameValue) && categoryValue === '00' ||
-            hospital.name.includes(nameValue) && hospital.categoryCode === categoryValue) {
+        // if (hospital.name.includes(nameValue) && categoryValue === '00' ||
+        //     hospital.name.includes(nameValue) && hospital.categoryCode === categoryValue) {
+        //     filteredHospitals.push(hospital);
+        // }
+        if (hospital.name.indexOf(nameValue) > -1 && (categoryValue === '00' || categoryValue === hospital.categoryCode)) {
             filteredHospitals.push(hospital);
         }
     }
