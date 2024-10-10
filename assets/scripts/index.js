@@ -60,6 +60,8 @@ const map = new kakao.maps.Map($map, {
     level: 3
 });
 
+const markers = [];
+
 const $filter = document.getElementById('filter');
 const $filterList = $filter.querySelector(':scope > .list');
 
@@ -99,10 +101,11 @@ const addItem = (hospital) => {
     }
 
     const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(hospital['longitude'], hospital['latitude'])
+        position: new kakao.maps.LatLng(hospital['latitude'], hospital['longitude'])
     });
 
     marker.setMap(map);
+    markers.push(marker);
 }
 
 const hospitalCategoryMap = {
@@ -145,8 +148,8 @@ const loadData = () => {
             hospitals.push({
                 name: hospitalObject['yadmNm'],                 // 병원 이름
                 categoryCode: hospitalObject['clCd'],           // 병원 구분 코드
-                latitude: hospitalObject['XPos'],               // 위도
-                longitude: hospitalObject['YPos'],              // 경도
+                latitude: hospitalObject['YPos'],               // 위도
+                longitude: hospitalObject['XPos'],              // 경도
                 address: hospitalObject['addr'],                // 주소
                 addressPostal: hospitalObject['postNo'],        // 우편번호
                 contact: hospitalObject['telno'],               // 전화번호
@@ -155,17 +158,55 @@ const loadData = () => {
             })
         }
         $filterList.innerHTML = '';
+        const mapBounds = map.getBounds();
+        const swPos = mapBounds.getSouthWest();
+        const nePost = mapBounds.getNorthEast();
+        const minLat = swPos.getLat();
+        const minLng = swPos.getLng();
+        const maxLat = nePost.getLat();
+        const maxLng = nePost.getLng();
         for (const hospital of hospitals) {
-            addItem(hospital);
+            if (hospital.latitude > minLat &&
+                hospital.latitude < maxLat &&
+                hospital.longitude > minLng &&
+                hospital.longitude < maxLng
+            ) {
+                addItem(hospital);
+            }
         }
     };
-    // xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
+    xhr.open('GET', 'http://192.168.4.252:8080/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000');
 
     // 가정용
-    xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000&numOfRows=1000');
+    // xhr.open('GET', 'http://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList?serviceKey=ubb%2BOlxX6eAciwn9CaiIjTmsvyt9xeGbp85%2FLfcs2R8QhQMQjQ6uFIXGbgrx60fI4VmYtKoj5UkMGbIsBkaeew%3D%3D&sidoCd=230000&numOfRows=1000');
     xhr.send();
     showLoading();
 };
+
+// zoom_changed : 옮기는 와중에 계속 실행이 됨
+// dragend: 옮기기 끝나고 딱 한 번
+kakao.maps.event.addListener(map, 'dragend', () => {
+    for (const marker of markers) {
+        marker.setMap(null);
+    }
+    $filterList.innerHTML = '';
+    const mapBounds = map.getBounds();
+    const swPos = mapBounds.getSouthWest();
+    const nePost = mapBounds.getNorthEast();
+    const minLat = swPos.getLat();
+    const minLng = swPos.getLng();
+    const maxLat = nePost.getLat();
+    const maxLng = nePost.getLng();
+    for (const hospital of hospitals) {
+        if (hospital.latitude > minLat &&
+            hospital.latitude < maxLat &&
+            hospital.longitude > minLng &&
+            hospital.longitude < maxLng
+        ) {
+            addItem(hospital);
+        }
+    }
+});
 
 loadData();
 
