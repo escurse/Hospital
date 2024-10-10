@@ -63,7 +63,14 @@ const map = new kakao.maps.Map($map, {
 const markers = [];
 
 const $filter = document.getElementById('filter');
+const $filterForm = $filter.querySelector(':scope > .form');
 const $filterList = $filter.querySelector(':scope > .list');
+
+// onsubmit: form 태그에서 쓰는 이벤트, 새로고침 하는 것.
+$filterForm.onsubmit = (e) => {
+    // 새로고침 막기
+    e.preventDefault();
+};
 
 const addItem = (hospital) => {
     const $name = document.createElement('span');
@@ -185,7 +192,8 @@ const loadData = () => {
 
 // zoom_changed : 옮기는 와중에 계속 실행이 됨
 // dragend: 옮기기 끝나고 딱 한 번
-kakao.maps.event.addListener(map, 'dragend', () => {
+
+['dragend', 'zoom_changed'].forEach((event) => kakao.maps.event.addListener(map, event, () => {
     for (const marker of markers) {
         marker.setMap(null);
     }
@@ -206,10 +214,9 @@ kakao.maps.event.addListener(map, 'dragend', () => {
             addItem(hospital);
         }
     }
-});
+}))
 
 loadData();
-
 
 // var mapContainer = document.getElementById('map'), // 지도를 표시할 div
 //     mapOption = {
